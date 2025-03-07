@@ -32,6 +32,6 @@ wandb:
   tags:
 
 defaults:
-  - task: FlyThrough
+  - task: Track
   - algo: ppo
   - _self_
