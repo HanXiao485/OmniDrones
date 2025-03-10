@@ -250,6 +250,7 @@ class Hover(IsaacEnv):
         pos = self.init_pos_dist.sample((*env_ids.shape, 1))
         rpy = self.init_rpy_dist.sample((*env_ids.shape, 1))
         rot = euler_to_quaternion(rpy)
+        print(f"pos: {pos.shape}")
         self.drone.set_world_poses(
             pos + self.envs_positions[env_ids].unsqueeze(1), rot, env_ids
         )

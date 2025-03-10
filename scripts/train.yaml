@@ -9,7 +9,8 @@ headless: true
 sim: ${task.sim}
 env: ${task.env}
 
-total_frames: 150_000_000
+# total_frames: 150_000_000
+total_frames: 15
 max_iters: -1
 eval_interval: -1
 save_interval: -1
@@ -32,6 +33,6 @@ wandb:
   tags:
 
 defaults:
-  - task: Track
+  - task: Hover
   - algo: ppo
   - _self_
