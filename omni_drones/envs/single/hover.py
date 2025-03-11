@@ -280,7 +280,7 @@ class Hover(IsaacEnv):
 
     def _pre_sim_step(self, tensordict: TensorDictBase):
         actions = tensordict[("agents", "action")]
-        self.effort = self.drone.apply_action(actions)
+        self.effort = self.drone.apply_action(actions)  # actions(num_envs * 6 * 1)
 
     def _compute_state_and_obs(self):
         self.drone_state = self.drone.get_state()
