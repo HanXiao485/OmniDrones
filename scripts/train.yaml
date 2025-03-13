@@ -10,7 +10,7 @@ sim: ${task.sim}
 env: ${task.env}
 
 # total_frames: 150_000_000
-total_frames: 15
+total_frames: 150_000_00
 max_iters: -1
 eval_interval: -1
 save_interval: -1
