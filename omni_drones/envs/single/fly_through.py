@@ -199,7 +199,7 @@ class FlyThrough(IsaacEnv):
             "agents": {
                 "action": self.drone.action_spec.unsqueeze(0),
             }
-        }).expand(self.num_envs).to(self.device)
+        }).expand(self.num_envs).to(self.device)  # expend action dim to env dim (muti agent)
         self.reward_spec = CompositeSpec({
             "agents": {
                 "reward": UnboundedContinuousTensorSpec((1, 1))
@@ -260,7 +260,7 @@ class FlyThrough(IsaacEnv):
         actions = tensordict[("agents", "action")]
         self.effort = self.drone.apply_action(actions)
 
-    def _compute_state_and_obs(self):
+    def _compute_state_and_obs(self): 
         self.drone_state = self.drone.get_state()
         self.drone_up = self.drone_state[..., 16:19]
         self.gate_pos = self.get_env_poses(self.gate.get_world_poses())[0]
