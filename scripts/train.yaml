@@ -33,6 +33,6 @@ wandb:
   tags:
 
 defaults:
-  - task: FlyThrough
+  - task: Hover
   - algo: ppo
   - _self_
