@@ -57,6 +57,12 @@ def main(cfg):
     if cfg.task.get("ravel_obs_central", False):
         transform = ravel_composite(base_env.observation_spec, ("agents", "observation_central"))
         transforms.append(transform)
+    if (
+         cfg.task.get("ravel_intrinsics", True)
+         and ("agents", "intrinsics") in base_env.observation_spec.keys(True)
+         and isinstance(base_env.observation_spec[("agents", "intrinsics")], CompositeSpec)
+     ):
+         transforms.append(ravel_composite(base_env.observation_spec, ("agents", "intrinsics"), start_dim=-1))
 
     # optionally discretize the action space or use a controller
     action_transform: str = cfg.task.get("action_transform", None)
@@ -68,6 +74,17 @@ def main(cfg):
         elif action_transform.startswith("discrete"):
             nbins = int(action_transform.split(":")[1])
             transform = FromDiscreteAction(nbins=nbins)
+            transforms.append(transform)
+        elif action_transform == "rate":
+            from omni_drones.controllers import RateController as _RateController
+            controller = _RateController(9.81, base_env.drone.params).to(base_env.device)
+            transform = RateController(controller)
+            transforms.append(transform)
+        elif action_transform == "attitude":
+            from omni_drones.controllers import AttitudeController as _AttitudeController
+            controller = _AttitudeController(9.81, base_env.drone.params).to(base_env.device)
+            # transform = AttitudeController(torch.vmap(torch.vmap(controller)))
+            transform = AttitudeController(controller)
             transforms.append(transform)
         else:
             raise NotImplementedError(f"Unknown action transform: {action_transform}")

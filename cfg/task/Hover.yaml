@@ -20,5 +20,6 @@ reward_action_smoothness_weight: 0.0
 reward_motion_smoothness_weight: 0.0
 reward_distance_scale: 1.2
 
-action_transform: null
-# action_transform: rate
+# action_transform: null
+# action_transform: discrete:5
+action_transform: rate
