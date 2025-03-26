@@ -33,6 +33,6 @@ wandb:
   tags:
 
 defaults:
-  - task: Hover
+  - task: Track
   - algo: ppo
   - _self_
