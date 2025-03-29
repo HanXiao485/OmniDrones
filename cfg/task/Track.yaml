@@ -25,5 +25,5 @@ reward_action_smoothness_weight: 0.
 reward_motion_smoothness_weight: 0.
 reward_distance_scale: 1.6
 
-action_transform: null
-# action_transform: rate
+# action_transform: null
+action_transform: attitude

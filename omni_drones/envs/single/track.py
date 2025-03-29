@@ -203,7 +203,12 @@ class Track(IsaacEnv):
             "tracking_error_ema": UnboundedContinuousTensorSpec(1),
             "action_smoothness": UnboundedContinuousTensorSpec(1),
         }).expand(self.num_envs).to(self.device)
+        info_spec = CompositeSpec({
+            "drone_state": UnboundedContinuousTensorSpec((self.drone.n, 13)),
+        }).expand(self.num_envs).to(self.device)
+        self.observation_spec["info"] = info_spec
         self.observation_spec["stats"] = stats_spec
+        self.info = info_spec.zero()
         self.stats = stats_spec.zero()
 
     def _reset_idx(self, env_ids: torch.Tensor):
@@ -254,6 +259,7 @@ class Track(IsaacEnv):
 
     def _compute_state_and_obs(self):
         self.drone_state = self.drone.get_state()
+        self.info["drone_state"][:] = self.drone_state[..., :13]
 
         self.target_pos[:] = self._compute_traj(self.future_traj_steps, step_size=5)
 
@@ -278,6 +284,7 @@ class Track(IsaacEnv):
                     "observation": obs,
                 },
                 "stats": self.stats.clone(),
+                 "info": self.info.clone()
             },
             self.batch_size,
         )
